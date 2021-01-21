@@ -1,7 +1,7 @@
 {
   "name": "ts_template",
-  "version": "1.0.0-alpha.1",
-  "description": "",
+  "version": "1.0.0-beta.1",
+  "description": "States manager",
   "main": "lib/index.js",
   "types": "./types/index.d.ts",
   "scripts": {
@@ -10,7 +10,7 @@
     "tsc": "tsc",
     "lint": "eslint . --ext .ts",
     "types": "tsc --d --declarationDir ./types",
-    "publish:lib": "npm run lint && npm run test && npm run types && npm run tsc && npm publish"
+    "pub": "npm run lint && npm run test && npm run types && npm run tsc && npm publish"
   },
   "keywords": [
     "typescript",
