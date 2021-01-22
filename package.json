@@ -4,6 +4,9 @@
   "description": "State manager",
   "main": "lib/index.js",
   "types": "./types/index.d.ts",
+  "bugs": "https://github.com/Bitzone-lab/sttore/issues",
+  "repository": "https://github.com/Bitzone-lab/sttore",
+  "homepage": "https://github.com/Bitzone-lab",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
