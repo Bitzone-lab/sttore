@@ -1,7 +1,7 @@
 {
-  "name": "ts_template",
+  "name": "sttore",
   "version": "1.0.0-beta.1",
-  "description": "States manager",
+  "description": "State manager",
   "main": "lib/index.js",
   "types": "./types/index.d.ts",
   "scripts": {
@@ -14,7 +14,11 @@
   },
   "keywords": [
     "typescript",
-    "javascript"
+    "javascript",
+    "states",
+    "store",
+    "storage",
+    "initial"
   ],
   "author": "Erick <ertriilive@gmail.com> (https://github.com/ertrii)",
   "license": "MIT",
