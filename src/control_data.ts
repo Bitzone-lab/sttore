@@ -1,4 +1,5 @@
 import { StoreManagement, Sttore } from './typing'
+import { isSttore } from './utils'
 
 export default function control_data<T>(st: StoreManagement<T>) {
     function set<K extends keyof T>(key: K, value: T[K], pending?: boolean): boolean {
@@ -12,7 +13,17 @@ export default function control_data<T>(st: StoreManagement<T>) {
         return true
     }
 
-    function confirm(key: keyof T) {
+    function confirm(key?: keyof T): boolean {
+        if (key === undefined) {
+            const size = st.stpd.size
+            st.stpd.forEach(function (val_pd, key_pd) {
+                st.set(key_pd, val_pd)
+                st.stpd.delete(key_pd)
+            })
+            st.stpd.clear()
+            return size !== 0
+        }
+
         const val_pd = st.stpd.get(key)
         if (val_pd !== undefined && st.stpd.has(key)) {
             st.set(key, val_pd)
@@ -22,7 +33,12 @@ export default function control_data<T>(st: StoreManagement<T>) {
         return false
     }
 
-    function cancel(key: keyof T): boolean {
+    function cancel(key?: keyof T): boolean {
+        if (key === undefined) {
+            const size = st.stpd.size
+            st.stpd.clear()
+            return size !== 0
+        }
         return st.stpd.delete(key)
     }
 
@@ -35,14 +51,23 @@ export default function control_data<T>(st: StoreManagement<T>) {
         if (store) {
             const list = store()
             for (const key in list) {
-                st.backup.set(key, list[key])
+                const val = list[key]
+                if (isSttore(val)) {
+                    val.cancel()
+                }
+                st.backup.set(key, val)
             }
             st.initial = JSON.stringify(list)
         } else {
-            const list: T = JSON.parse(st.initial)
-            for (const key in list) {
-                st.set(key, list[key])
-                st.backup.set(key, list[key])
+            const init_list: T = JSON.parse(st.initial)
+            for (const key in st.list()) {
+                const val = st.list()[key]
+                if (isSttore(val)) {
+                    val.init()
+                } else {
+                    st.set(key, init_list[key])
+                    st.backup.set(key, init_list[key])
+                }
             }
         }
         st.stpd.clear()

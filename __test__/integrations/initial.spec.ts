@@ -65,4 +65,51 @@ describe('initial', function () {
         expect(Object.values(store.changes()).length).toBe(0)
         expect(store.changes()).toMatchObject({})
     })
+
+    it('initial children store', function () {
+        const store = sttore({
+            company: 'Google',
+            active: false,
+            date: sttore({ format: 'YYYY/MM/DD', day: 9 })
+        })
+
+        store.set('company', 'Facebook')
+        store.set('active', true)
+        store().date.set('format', 'DD-MM-YYYY')
+        store().date.set('day', 12)
+        expect(store.change()).toBeTruthy()
+        expect(store().active).toBeTruthy()
+        expect(store().company).toBe('Facebook')
+        expect(store().date()).toMatchObject({
+            format: 'DD-MM-YYYY',
+            day: 12
+        })
+        store.init()
+        expect(store().company).toBe('Google')
+        expect(store().active).toBeFalsy()
+        expect(store().date()).toMatchObject({ format: 'YYYY/MM/DD', day: 9 })
+    })
+
+    it('initial conserv states children store', function () {
+        const store = sttore({
+            company: 'Google',
+            active: false,
+            date: sttore({ format: 'YYYY/MM/DD', day: 9 }),
+            country: sttore({ name: 'China' })
+        })
+
+        store.set('company', 'Facebook')
+        store.set('active', true)
+        store().date.set('format', 'DD-MM-YYYY')
+        store().date.set('day', 12, true)
+        expect(store().date.change('day')).toBeFalsy()
+        store().country.set('name', 'Germany')
+        store.init(store)
+        expect(store().company).toBe('Facebook')
+        expect(store().active).toBeTruthy()
+        expect(store().date().format).toBe('DD-MM-YYYY')
+        expect(store().date().day).toBe(9)
+        expect(store().date.change('day')).toBeFalsy()
+        expect(store().country().name).toBe('Germany')
+    })
 })

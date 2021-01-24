@@ -16,12 +16,12 @@ export interface Sttore<T> {
      * Confirm a pending update.
      * @param key keyname of state
      */
-    confirm: (key: keyof T) => boolean
+    confirm: (key?: keyof T) => boolean
     /**
      * Cancel a pending update and return to its previous value.
      * @param key keyname of state
      */
-    cancel: (key: keyof T) => boolean
+    cancel: (key?: keyof T) => boolean
     frozen: <K extends keyof T>(key: K) => Sttore<any> | T[K] | null
     helper: (key: keyof T, value?: string) => string
     helpers: (values?: Record<keyof T, string>) => Record<keyof T, string>

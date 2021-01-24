@@ -1,14 +1,15 @@
-import { Sttore, PropSttore, StoreManagement } from './typing'
+import { Sttore as S, PropSttore, StoreManagement } from './typing'
 import store from './store'
 import control_data from './control_data'
 import control_helper from './control_helper'
 import control_changes from './control_changes'
+export type Sttore<T> = S<T>
 
 /**
  * @version 1.0.0-beta.1
  * Sttore
  */
-export default function sttore<T extends PropSttore<any>>(states: T): Sttore<T> {
+export default function sttore<T extends PropSttore<any>>(states: T): S<T> {
     const st: StoreManagement<T> = store(states)
 
     const { set, confirm, cancel, frozen, init } = control_data(st)
