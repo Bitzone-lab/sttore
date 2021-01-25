@@ -38,6 +38,11 @@ export interface Sttore<T> {
      * Initialize the states.
      */
     init: (store?: Sttore<T>) => void
+    /**
+     * It provides you with the option to restore the helpers and pending data.
+     * @param to Specify which one you want to restore.
+     */
+    restore: (to?: 'helper' | 'pending') => void
 }
 
 export interface PropSttore<T> {

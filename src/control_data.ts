@@ -2,6 +2,14 @@ import { StoreManagement, Sttore } from './typing'
 import { isSttore } from './utils'
 
 export default function control_data<T>(st: StoreManagement<T>) {
+    /**
+     * Update status
+     * @param key keyname state
+     * @param value value state
+     * @param pending Activates pending status update mode.
+     * To confirm this update it will require the confirm method, otherwise use the cancel method.
+     * A pending status is not detected as a change
+     */
     function set<K extends keyof T>(key: K, value: T[K], pending?: boolean): boolean {
         if (!st.has(key)) return false
         if (pending) {

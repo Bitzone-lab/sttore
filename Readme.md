@@ -6,6 +6,7 @@ Sttore
 ```
 npm install sttore
 ```
+## Use
 
 ```js
 import sttore from 'sttore'
@@ -15,7 +16,6 @@ or
 const sttore = require('sttore')
 ```
 
-## First Store
 
 ```js
 const store = sttore({
@@ -95,6 +95,13 @@ store.cancel('name') // true
 store.changes()  // { age: 22 }
 ```
 
+You can confirm or cancel all.
+
+```js
+states.confirm()
+// or
+store.cancel()
+```
 ## Helper
 
 The helpers are just an extra helpful information. This can be used for validation messages for example.
@@ -107,6 +114,19 @@ store.helpers({ name: '', age: 'Its not numeric' }) // { name: '', age: 'Its not
 ```
 
 Helpers are originated by states, by default their value is an empty string.
+
+## Restore
+
+You can restore the `helpers` or cancel all `pending` data or both.
+
+```js
+// restore both
+store.restore()
+// cancel all update pending
+store.restore('pending')
+// restore helper
+store.restore('helper')
+```
 
 ## Initial
 

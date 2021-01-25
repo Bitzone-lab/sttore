@@ -3,10 +3,11 @@ import store from './store'
 import control_data from './control_data'
 import control_helper from './control_helper'
 import control_changes from './control_changes'
+import { isSttore } from './utils'
 export type Sttore<T> = S<T>
 
 /**
- * @version 1.0.0-beta.1
+ * @version 1.0.0
  * Sttore
  */
 export default function sttore<T extends PropSttore<any>>(states: T): S<T> {
@@ -24,6 +25,41 @@ export default function sttore<T extends PropSttore<any>>(states: T): S<T> {
         return st.current()
     }
 
+    function restore(to?: 'helper' | 'pending') {
+        function restoreHelper() {
+            for (const key in st.list()) {
+                st.sthp.set(key, '')
+                const value: T[keyof T] = st.list()[key]
+                if (isSttore(value)) {
+                    value.restore()
+                }
+            }
+        }
+
+        function restorePending() {
+            st.stpd.clear()
+            for (const key in st.list()) {
+                const value: T[keyof T] = st.list()[key]
+                if (isSttore(value)) {
+                    value.cancel()
+                }
+            }
+        }
+
+        if (to === undefined) {
+            restoreHelper()
+            restorePending()
+        }
+
+        if (to === 'helper') {
+            restoreHelper()
+        }
+
+        if (to === 'pending') {
+            restorePending()
+        }
+    }
+
     self.set = set
     self.confirm = confirm
     self.cancel = cancel
@@ -33,6 +69,7 @@ export default function sttore<T extends PropSttore<any>>(states: T): S<T> {
     self.change = change
     self.changes = changes
     self.init = init
+    self.restore = restore
 
     return self
 }
