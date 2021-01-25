@@ -43,6 +43,16 @@ export interface Sttore<T> {
      * @param to Specify which one you want to restore.
      */
     restore: (to?: 'helper' | 'pending') => void
+    /**
+     * You can omit the states that you don't want to know if it had changes.
+     * @param keys keynames for omit
+     */
+    omit: (keys: Array<Partial<keyof T>>) => boolean
+    /**
+     * Just check the changes to the keynames you specified.
+     * @param keys keynames you want to verify.
+     */
+    only: (keys: Array<Partial<keyof T>>) => boolean
 }
 
 export interface PropSttore<T> {
@@ -54,7 +64,7 @@ export type TypesStore = string | number | boolean | null
 export type Store<T, K extends keyof T> = Map<K, T[K]>
 export type StoreBackup<T> = Map<keyof T, T[keyof T] | Sttore<any>>
 
-export interface StoreManagement<T> {
+export interface StoresManagement<T> {
     set: <K extends keyof T>(key: K, value: T[K]) => void
     has: (key: keyof T) => boolean
     list: () => T
@@ -64,4 +74,5 @@ export interface StoreManagement<T> {
     get: <K extends keyof T>(key: K) => T[K] | undefined
     stpd: Store<T, any>
     initial: string
+    st: Store<T, any>
 }

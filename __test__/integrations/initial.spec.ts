@@ -112,4 +112,18 @@ describe('initial', function () {
         expect(store().date.change('day')).toBeFalsy()
         expect(store().country().name).toBe('Germany')
     })
+
+    it('initial with other sttore', function () {
+        const store = sttore({ name: 'Manuel', active: false })
+        store.set('name', 'María')
+        const store2 = sttore({
+            name: 'Liliana',
+            active: true
+        })
+        store.init(store2)
+        expect(store()).toMatchObject({
+            name: 'Liliana',
+            active: true
+        })
+    })
 })

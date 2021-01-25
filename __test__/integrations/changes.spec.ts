@@ -89,4 +89,55 @@ describe('changes', function () {
             year: 1995
         })
     })
+
+    it('initial changes', function () {
+        const store = sttore({
+            active: false,
+            date: sttore({ format: 'YYYY/MM/DD', day: 9 }),
+            country: sttore({ name: 'China' })
+        })
+        store.set('active', true)
+        store().date.set('format', 'YYYY-MM-DD')
+        store().country.set('name', 'Brazil')
+        expect(store.change()).toBeTruthy()
+        store.init()
+        expect(store.change()).toBeFalsy()
+    })
+
+    it('initial changes with new data', function () {
+        const store = sttore({
+            active: false,
+            country: sttore({ name: 'China' })
+        })
+        store.set('active', true)
+        store().country.set('name', 'Spain')
+        const store2 = sttore({
+            active: false,
+            country: sttore({ name: 'France' })
+        })
+        expect(store.change()).toBeTruthy()
+        store.init(store2)
+        expect(store().active).toBeFalsy()
+        expect(store().country().name).toBe('France')
+        expect(store.change()).toBeFalsy()
+    })
+
+    it('only', function () {
+        const store = sttore({ name: 'Luis', age: 19, active: false })
+        store.set('name', 'Manuel')
+        expect(store.change()).toBeTruthy()
+        expect(store.only(['age', 'active'])).toBeFalsy()
+        expect(store.only(['name'])).toBeTruthy()
+        expect(store.only(['name', 'age'])).toBeTruthy()
+    })
+
+    it('omit', function () {
+        const store = sttore({ name: 'Luis', age: 19, active: false })
+        store.set('name', 'Manuel')
+        store.set('active', true)
+        expect(store.change()).toBeTruthy()
+        expect(store.omit(['name', 'active'])).toBeFalsy()
+        expect(store.omit(['age'])).toBeTruthy()
+        expect(store.omit(['age', 'name'])).toBeTruthy()
+    })
 })

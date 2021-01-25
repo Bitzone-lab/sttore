@@ -66,6 +66,19 @@ You can get only the states that had change.
 store.changes() // { age: 15 }
 ```
 
+You can omit the states that you don't want to know if it had changes.
+
+```js
+store.omit(['age']) // false
+store.omit(['name']) // true
+```
+
+Or vice versa
+
+```js
+store.only(['age']) // true
+store.only(['name']) // false
+```
 ## Pending
 
 They are updates that are pending confirmation.

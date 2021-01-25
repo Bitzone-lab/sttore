@@ -1,6 +1,6 @@
-import { Store, StoreManagement, Sttore, StoreBackup } from './typing'
+import { Store, StoresManagement, Sttore, StoreBackup } from './typing'
 
-export default function store<T>(data: T): StoreManagement<T> {
+export default function store<T>(data: T): StoresManagement<T> {
     const initial: string = JSON.stringify(data)
     const st: Store<T, any> = new Map()
     const stbackup: StoreBackup<T> = new Map()
@@ -55,6 +55,7 @@ export default function store<T>(data: T): StoreManagement<T> {
         get,
         stpd,
         initial,
-        current
+        current,
+        st
     }
 }
