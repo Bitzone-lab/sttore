@@ -33,7 +33,6 @@ export default function control_initial<T>(sts: StoresManagement<T>) {
             })
         } else {
             process(store())
-            sts.initial = JSON.stringify(store())
         }
     }
 

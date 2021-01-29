@@ -8,7 +8,7 @@ import control_initial from './control_initial'
 export type Sttore<T> = S<T>
 
 /**
- * @version 1.1.0
+ * @version 1.1.1
  * Sttore
  */
 export default function sttore<T extends PropSttore<any>>(states: T): S<T> {

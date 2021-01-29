@@ -1,6 +1,6 @@
 {
   "name": "sttore",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "State manager",
   "main": "lib/index.js",
   "types": "./types/index.d.ts",
@@ -16,8 +16,6 @@
     "pub": "npm run lint && npm run test && npm run types && npm run tsc && npm publish"
   },
   "keywords": [
-    "typescript",
-    "javascript",
     "states",
     "store",
     "storage",

@@ -122,6 +122,25 @@ describe('changes', function () {
         expect(store.change()).toBeFalsy()
     })
 
+    it('initial changes with init to init', function () {
+        const store = sttore({
+            active: false,
+            country: sttore({ name: 'China' })
+        })
+        store.set('active', true)
+        store().country.set('name', 'Spain')
+        const store2 = sttore({
+            active: false,
+            country: sttore({ name: 'France' })
+        })
+        store.init(store2)
+        store.set('active', false)
+        store().country.set('name', 'EEUU')
+        expect(store.change()).toBeTruthy()
+        store.init()
+        expect(store.change()).toBeFalsy()
+    })
+
     it('only', function () {
         const store = sttore({ name: 'Luis', age: 19, active: false })
         store.set('name', 'Manuel')

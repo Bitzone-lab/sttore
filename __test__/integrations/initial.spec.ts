@@ -35,8 +35,8 @@ describe('initial', function () {
         })
         store.init()
         expect(store()).toMatchObject({
-            company: 'Facebook',
-            active: true
+            company: 'Google',
+            active: false
         })
     })
 
