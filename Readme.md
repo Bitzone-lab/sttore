@@ -1,6 +1,10 @@
 Sttore
 =========
 
+[![install size](https://packagephobia.com/badge?p=sttore)](https://packagephobia.com/result?p=sttore)
+[![Package Quality](https://packagequality.com/shield/sttore.svg)](https://packagequality.com/#?package=sttore)
+[![David Dependencies](https://david-dm.org/Bitzone-lab/sttore.svg)](https://david-dm.org/Bitzone-lab/sttore)
+
 > State Manager
 
 ```
@@ -168,6 +172,56 @@ store.init(store)
 store() // { name: 'Leo', age: 24 }
 store.change() // false
 ```
+
+## Events
+
+They listen to the changes in the values of the states.
+
+```js
+const store = sttore({ name: 'erick', age: 15 })
+store.on('name', function (value, by) {
+    // value = juan
+    // by = set
+})
+store.on('age', function (val, by) {
+    // value = 18
+    // by = set
+})
+store.set('name', 'juan')
+store.set('age', 18)
+```
+
+The events work like a middleware, you can discard that value change by returning a `false`.
+
+```js
+const store = sttore({ name: 'erick', age: 15 })
+store.on('name', function (value, by) {
+    // value = juan
+    return false // discarding change 
+})
+store.on('age', function (val, by) {
+    // value = 18
+    return true // is equal to not returning anything
+})
+store.set('name', 'juan')
+store().name // 'erick'
+store.set('age', 18)
+store().age // 18
+```
+It is possible to force an event with emit.
+
+```js
+store.emit('name')
+```
+
+**By**
+
+|Name|description|
+|---|----|
+| emit | Event emitted by the emit method  |
+| set | Event emitted by the set and store method -> `store({ ... })`
+| confirm | Event emitted by the confirm method  |
+| cancel | Event emitted by the cancel method  |
 
 ## Nesting
 
