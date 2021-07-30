@@ -53,6 +53,14 @@ export interface Sttore<T> {
      * @param keys keynames you want to verify.
      */
     only: (keys: Array<Partial<keyof T>>) => boolean
+    /**
+     * Listen to the events emitted by the data change
+     */
+    on: <K extends keyof T>(key: K, listen: Listen<T, K>) => void
+    /**
+     * Force to emit an event
+     */
+    emit: (key: keyof T) => boolean
 }
 
 export interface PropSttore<T> {
@@ -75,4 +83,8 @@ export interface StoresManagement<T> {
     stpd: Store<T, any>
     initial: string
     st: Store<T, any>
+    stev: Map<keyof T, Listen<T, any>>
 }
+
+export type Listen<T, K extends keyof T> = (value: T[K], by: EmitBy) => boolean | void
+export type EmitBy = 'emit' | 'set' | 'confirm' | 'cancel'

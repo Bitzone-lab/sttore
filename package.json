@@ -21,6 +21,12 @@
     "storage",
     "initial"
   ],
+  "files": [
+    "lib",
+    "types",
+    "Readme.md",
+    "LICENCE"
+  ],
   "author": "Erick <ertriilive@gmail.com> (https://github.com/ertrii)",
   "license": "MIT",
   "devDependencies": {

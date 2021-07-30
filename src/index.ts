@@ -5,6 +5,7 @@ import control_helper from './control_helper'
 import control_changes from './control_changes'
 import { isSttore } from './utils'
 import control_initial from './control_initial'
+import events from './events'
 export type Sttore<T> = S<T>
 
 /**
@@ -14,14 +15,16 @@ export type Sttore<T> = S<T>
 export default function sttore<T extends PropSttore<any>>(states: T): S<T> {
     const st: StoresManagement<T> = store(states)
 
-    const { set, confirm, cancel, frozen } = control_data(st)
+    const { on, emit, emitBy } = events(st)
+    const { set, confirm, cancel, frozen } = control_data(st, emitBy)
     const { init } = control_initial(st)
     const { helper, helpers } = control_helper(st.sthp)
     const { change, changes, omit, only } = control_changes(st)
     function self(values?: T): T {
         for (const key in values) {
             if (st.has(key)) {
-                set(key, values[key])
+                const val = values[key]
+                set(key, val)
             }
         }
         return st.current()
@@ -74,6 +77,8 @@ export default function sttore<T extends PropSttore<any>>(states: T): S<T> {
     self.restore = restore
     self.omit = omit
     self.only = only
+    self.on = on
+    self.emit = emit
 
     return self
 }

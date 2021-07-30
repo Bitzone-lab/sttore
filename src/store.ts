@@ -1,4 +1,4 @@
-import { Store, StoresManagement, Sttore, StoreBackup } from './typing'
+import { Store, StoresManagement, Sttore, StoreBackup, EmitBy } from './typing'
 
 export default function store<T>(data: T): StoresManagement<T> {
     const initial: string = JSON.stringify(data)
@@ -6,6 +6,7 @@ export default function store<T>(data: T): StoresManagement<T> {
     const stbackup: StoreBackup<T> = new Map()
     const stpd: Store<T, any> = new Map()
     const sthp: Map<keyof T, string> = new Map()
+    const stev: Map<keyof T, (key: keyof T, value: T[keyof T], by: EmitBy) => boolean> = new Map()
 
     for (const key in data) {
         const value: any = data[key]
@@ -56,6 +57,7 @@ export default function store<T>(data: T): StoresManagement<T> {
         stpd,
         initial,
         current,
-        st
+        st,
+        stev
     }
 }

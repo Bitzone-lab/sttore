@@ -1,16 +1,11 @@
-import { StoresManagement } from './typing'
-// import { isSttore } from './utils'
+import { EmitBy, StoresManagement } from './typing'
 
-export default function control_data<T>(sts: StoresManagement<T>) {
-    /**
-     * Update status
-     * @param key keyname state
-     * @param value value state
-     * @param pending Activates pending status update mode.
-     * To confirm this update it will require the confirm method, otherwise use the cancel method.
-     * A pending status is not detected as a change
-     */
+export default function control_data<T>(
+    sts: StoresManagement<T>,
+    emitBy: (key: keyof T, value: T[keyof T], by: EmitBy) => boolean
+) {
     function set<K extends keyof T>(key: K, value: T[K], pending?: boolean): boolean {
+        if (!emitBy(key, value, 'set')) return false
         if (!sts.has(key)) return false
         if (pending) {
             sts.stpd.set(key, value)
@@ -24,17 +19,19 @@ export default function control_data<T>(sts: StoresManagement<T>) {
     function confirm(key?: keyof T): boolean {
         if (key === undefined) {
             const size = sts.stpd.size
-            sts.stpd.forEach(function (val_pd, key_pd) {
-                sts.set(key_pd, val_pd)
-                sts.stpd.delete(key_pd)
+            sts.stpd.forEach(function (_valPd, _keyPd) {
+                if (emitBy(_keyPd, _valPd, 'confirm')) {
+                    sts.set(_keyPd, _valPd)
+                    sts.stpd.delete(_keyPd)
+                }
             })
             sts.stpd.clear()
             return size !== 0
         }
-
-        const val_pd = sts.stpd.get(key)
-        if (val_pd !== undefined && sts.stpd.has(key)) {
-            sts.set(key, val_pd)
+        const valPd = sts.stpd.get(key)
+        if (valPd !== undefined && sts.stpd.has(key)) {
+            if (!emitBy(key, valPd, 'confirm')) return false
+            sts.set(key, valPd)
             sts.stpd.delete(key)
             return true
         }
@@ -43,9 +40,18 @@ export default function control_data<T>(sts: StoresManagement<T>) {
 
     function cancel(key?: keyof T): boolean {
         if (key === undefined) {
-            const size = sts.stpd.size
-            sts.stpd.clear()
+            let size = 0
+            sts.stpd.forEach(function (valPd, keyPd) {
+                if (emitBy(keyPd, valPd, 'cancel')) {
+                    sts.stpd.delete(keyPd)
+                    size++
+                }
+            })
             return size !== 0
+        }
+        const val = sts.stpd.get(key)
+        if (val !== undefined) {
+            if (!emitBy(key, val, 'cancel')) return false
         }
         return sts.stpd.delete(key)
     }
