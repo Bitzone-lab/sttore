@@ -1,5 +1,5 @@
-export default function control_helper<T>(sthp: Map<keyof T, string>) {
-    function helper(key: keyof T, value?: string): string {
+export default function control_helper<T>(sthp: Map<keyof T, any>) {
+    function helper(key: keyof T, value?: any): any {
         if (value === undefined) {
             return sthp.get(key) || ''
         }
@@ -8,7 +8,7 @@ export default function control_helper<T>(sthp: Map<keyof T, string>) {
         return value
     }
 
-    function helpers(values?: Record<keyof T, string>): Record<keyof T, string> {
+    function helpers(values?: Record<keyof T, any>): Record<keyof T, any> {
         const data: Record<any, any> = {}
         if (values) {
             for (const key in values) {

@@ -26,8 +26,8 @@ export default function control_changes<T>(sts: StoresManagement<T>) {
         }
 
         let has_change = false
-        for (const key in sts.list()) {
-            has_change = identify_change(key)
+        for (const _key in sts.list()) {
+            has_change = identify_change(_key)
             if (has_change) break
         }
 
@@ -35,15 +35,15 @@ export default function control_changes<T>(sts: StoresManagement<T>) {
     }
 
     function changes(): Partial<T> {
-        const changes: Partial<T> = {}
+        const data: Partial<T> = {}
         const list: T = sts.list()
         for (const key in list) {
             const value = list[key]
             if (identify_change(key)) {
-                changes[key] = value
+                data[key] = value
             }
         }
-        return changes
+        return data
     }
 
     function omit(keys: Array<Partial<keyof T>>): boolean {

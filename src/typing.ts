@@ -23,8 +23,8 @@ export interface Sttore<T> {
      */
     cancel: (key?: keyof T) => boolean
     frozen: <K extends keyof T>(key: K) => Sttore<any> | T[K] | null
-    helper: (key: keyof T, value?: string) => string
-    helpers: (values?: Record<keyof T, string>) => Record<keyof T, string>
+    helper: (key: keyof T, value?: any) => string
+    helpers: (values?: Record<keyof T, any>) => Record<keyof T, any>
     /**
      * Identifies if there were changes in states
      * @param key keyname of state
