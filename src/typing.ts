@@ -56,7 +56,7 @@ export interface Sttore<T> {
     /**
      * Listen to the events emitted by the data change
      */
-    on: <K extends keyof T>(key: K, listen: Listen<T, K>) => void
+    on: <K extends keyof T>(key: K, listen: Listen<T, K> | null) => void
     /**
      * Force to emit an event
      */

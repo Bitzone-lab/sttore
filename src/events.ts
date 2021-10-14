@@ -1,8 +1,12 @@
 import { EmitBy, Listen, StoresManagement } from './typing'
 
 export default function events<T>(sts: StoresManagement<T>) {
-    function on<K extends keyof T>(key: K, listen: Listen<T, K>) {
-        sts.stev.set(key, listen)
+    function on<K extends keyof T>(key: K, listen: Listen<T, K> | null) {
+        if (listen) {
+            sts.stev.set(key, listen)
+        } else {
+            sts.stev.delete(key)
+        }
     }
 
     function emitBy<K extends keyof T>(key: K, value: T[K], by: EmitBy): boolean {

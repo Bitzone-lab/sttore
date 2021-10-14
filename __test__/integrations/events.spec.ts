@@ -98,4 +98,16 @@ describe('events', () => {
         expect(store().name).toBe('erick')
         expect(store().age).toBe(15)
     })
+
+    it('remove event', function () {
+        const store = sttore({ name: 'erick', age: 15 })
+        store.on('name', function () {
+            return false
+        })
+        store.set('name', 'juan')
+        expect(store().name).toBe('erick')
+        store.on('name', null)
+        store.set('name', 'juan')
+        expect(store().name).toBe('juan')
+    })
 })
